@@ -2,6 +2,8 @@
 using System.Drawing;
 using System;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+using Microsoft.Win32;
 
 namespace SYCScreensaver
 {
@@ -22,7 +24,7 @@ namespace SYCScreensaver
         public MainForm(IntPtr PreviewWndHandle)
         {
             InitializeComponent();
-
+            ActivateFeatures();
             // Establecer la ventana de previsualización como la ventana padre
             SetParent(this.Handle, PreviewWndHandle);
 
@@ -71,6 +73,34 @@ namespace SYCScreensaver
                 {
                     browser.Url = new Uri(Properties.Settings.Default.urldefault);
                 }
+            }
+        }
+
+        private void ActivateFeatures()
+        {
+            const string BROWSER_EMULATION_KEY = @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION";
+            const string GPU_RENDERING_KEY = @"Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_GPU_RENDERING";
+            String appname = Process.GetCurrentProcess().ProcessName + ".exe";
+            const int browserEmulationMode = 11001;
+            const int GPURenderingMode = 1;
+
+            RegistryKey browserEmulationKey =
+                Registry.CurrentUser.OpenSubKey(BROWSER_EMULATION_KEY, RegistryKeyPermissionCheck.ReadWriteSubTree) ??
+                Registry.CurrentUser.CreateSubKey(BROWSER_EMULATION_KEY);
+
+            RegistryKey browserRenderingKey =
+                Registry.CurrentUser.OpenSubKey(GPU_RENDERING_KEY, RegistryKeyPermissionCheck.ReadWriteSubTree) ??
+                Registry.CurrentUser.CreateSubKey(GPU_RENDERING_KEY);
+
+            if (browserEmulationKey != null)
+            {
+                browserEmulationKey.SetValue(appname, browserEmulationMode, RegistryValueKind.DWord);
+                browserEmulationKey.Close();
+            }
+            if (browserRenderingKey != null)
+            {
+                browserRenderingKey.SetValue(appname, GPURenderingMode, RegistryValueKind.DWord);
+                browserRenderingKey.Close();
             }
         }
 

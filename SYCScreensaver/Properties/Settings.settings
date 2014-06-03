@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="urldefault" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://www.syc.com.co</Value>
+      <Value Profile="(Default)">http://ewall.syc.com.co</Value>
     </Setting>
     <Setting Name="urllist" Type="System.Collections.ArrayList" Scope="User">
       <Value Profile="(Default)" />
