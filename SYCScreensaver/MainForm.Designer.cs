@@ -43,6 +43,7 @@
             this.browser.ScrollBarsEnabled = false;
             this.browser.Size = new System.Drawing.Size(884, 561);
             this.browser.TabIndex = 0;
+            this.browser.Url = new System.Uri("http://ewall.syc.com.co", System.UriKind.Absolute);
             this.browser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.browser_DocumentCompleted);
             // 
             // MainForm
